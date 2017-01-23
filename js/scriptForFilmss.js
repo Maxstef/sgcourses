@@ -13,6 +13,7 @@ $('#sort').on('change', function () {
     }
 
 });
+
 function getFilms(offset){
     $.post("server/get_films.php",
             {
@@ -22,23 +23,44 @@ function getFilms(offset){
             },
             function (data, status) {
                 //console.log(data);
-                updateTable(JSON.parse(data));
+                updateTable('#list_of_films', JSON.parse(data));
             });
 }
-function updateTable(data){
-    $('#list_of_films tbody').html('');
-    if (offset == 0) {
-        $('#list_of_films #prev').css({ 'visibility': 'hidden' });
-    } else {
-        $('#list_of_films #prev').css({ 'visibility': 'visible' });
+function getFilmsFromCountry(country){
+    $.post("server/get_films_from_country.php",
+            {
+                country: country
+            },
+            function (data, status) {
+               
+                var arr = JSON.parse(data);
+                var sum = 0;
+                var num = 0;
+                for (var i = 0; i < arr.length; i++) {
+                    num++;
+                    sum += parseInt(arr[i].budget);
+                }
+                document.getElementById('average-budget').innerHTML = sum / num + ' $';
+                
+            });
+}
+function updateTable(table, data){
+    $(table + ' tbody').html('');
+    if(table == '#list_of_films'){
+        if (offset == 0) {
+            $('#list_of_films #prev').css({ 'visibility': 'hidden' });
+        } else {
+            $('#list_of_films #prev').css({ 'visibility': 'visible' });
+        }
+        if(data.length < maxNumber){
+            $('#list_of_films #next').css({'visibility': 'hidden'});
+        } else {
+             $('#list_of_films #next').css({'visibility': 'visible'});
+        }
     }
-    if(data.length < maxNumber){
-        $('#list_of_films #next').css({'visibility': 'hidden'});
-    } else {
-         $('#list_of_films #next').css({'visibility': 'visible'});
-    }
+    
     for (var i = 0; i < data.length; i++ ){
-        $('#list_of_films tbody').append('<tr><td>' + data[i].name + '</td><td>' + data[i].country + '</td><td>'  + data[i].genre + '</td><td>'  + data[i].year + '</td><td>'  + data[i].budget + '</td><td>'  + data[i].director + '</td></tr>');
+        $(table + ' tbody').append('<tr><td>' + data[i].name + '</td><td>' + data[i].country + '</td><td>'  + data[i].genre + '</td><td>'  + data[i].year + '</td><td>'  + data[i].budget + '</td><td>'  + data[i].director + '</td></tr>');
     }
        
 }
@@ -108,8 +130,31 @@ $('#add-film-btn').on('click', function (event) {
             },
             function (data, status) {
                 $('#add-film-feedback').text(data);
+                $('#name').val('');
+                $('#director').val('');
+                $('#budget').val('');
             });
 
 });
+$('#filter').on('keyup', function () {
+    //console.log($(this).val());
+    if($(this).val().match(/[A-zА-я0-9і]/g)){
+        $.post("server/get_films_filter.php",
+            {
+                string: $(this).val()
+            },
+            function (data, status) {
+                //console.log(data);
+
+                updateTable('#list_of_filtered_films', JSON.parse(data));
+            });
+    } else {
+        updateTable('#list_of_filtered_films', []);
+    }
+
+    
+});
 getFilms(offset);
+getFilmsFromCountry('Україна');
+
 

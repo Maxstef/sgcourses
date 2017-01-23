@@ -1,12 +1,11 @@
 <?php
-
+    require './functions.php';
     ini_set('error_reporting', E_ALL);
     ini_set('display_errors', 1);
     ini_set('display_startup_errors', 1);
     if(isset($_POST['offset']) && isset($_POST['max']) && isset($_POST['sort'])){
-        if(file_exists('../data/films.txt')){
-
-            $array = file('../data/films.txt');
+        
+            $array = get_films();
             if($_POST['sort'] == 'name'){
                 sort($array);
                 $all_films = array();
@@ -78,7 +77,7 @@
             
             echo json_encode($all_films, JSON_UNESCAPED_UNICODE);
             
-        }
+        
     } else {
         echo 'false';
     }

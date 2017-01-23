@@ -139,10 +139,37 @@
               <span id="add-film-feedback"></span>
             </form>
             <div class="ui divider"></div>
+            <div class="ui container">
+                <p>Середній бюджет фільмів що знімались в Україні: <span id="average-budget"></span></p>
+            </div>
+            <div class="ui divider"></div>
             
+            <div style="min-height:  500px" class="ui container">
+                <h2 class="ui header">Знайти фільм за назвою</h2>
+                <div class="ui icon input">
+                  <i class="search icon"></i>
+                  <input type="text" placeholder="Search..." id="filter">
+                </div>
+                <table class="ui striped table" id="list_of_filtered_films">
+                  <thead>
+                    <tr>
+                      <th>Назва</th>
+                      <th>Країна</th>
+                      <th>Жанр</th>
+                      <th>Рік</th>
+                      <th>Бюджет($)</th>
+                      <th>Режисер</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+               
+                  </tbody>
+              
+                </table>
+            </div>
             
         </div>
         <script src="js/jquery-3.1.1.min.js"></script>
-        <script src="js/scriptForFilms.js"></script>
+        <script src="js/scriptForFilmss.js"></script>
     </body>
 </html>

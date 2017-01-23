@@ -130,9 +130,12 @@ $('#add-film-btn').on('click', function (event) {
             },
             function (data, status) {
                 $('#add-film-feedback').text(data);
-                $('#name').val('');
-                $('#director').val('');
-                $('#budget').val('');
+                if(data == 'Фільм додано до списку'){
+                    $('#name').val('');
+                    $('#director').val('');
+                    $('#budget').val('');
+                }
+                
             });
 
 });
